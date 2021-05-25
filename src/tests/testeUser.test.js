@@ -8,10 +8,10 @@ describe ("Testando User",  () => {
         .send({
             nome: "DiegoTASB",
             sobrenome: "Zezedasasasq",
-            email: "dieasdassssdsadasda@rocketseat.ufape.com.pt",
-            telefone: "(21)981sss819091",
+            email: "dieasdassssdsadasda@rocketseat.ufape.net",
+            telefone: "(81)998819091",
             genero: "masculino",
-            dataNascimento: "2019-04-28T14:45:15",
+            dataNascimento: "1999-04-28T14:45:15",
             password: "123456r75"
         })
         
