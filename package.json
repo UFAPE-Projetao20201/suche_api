@@ -20,6 +20,7 @@
     "mongoose": "^5.12.9",
     "nodemailer": "^6.6.1",
     "nodemailer-express-handlebars": "^4.0.0",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.7",
     "path": "^0.12.7",
     "simplecrypt": "^0.1.0",
