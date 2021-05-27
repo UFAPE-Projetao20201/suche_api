@@ -7,13 +7,13 @@ describe ("Testando User",  () => {
         const res = await request(app)
         .post('/auth/register')
         .send({
-            nome: "DiegoTASB",
-            sobrenome: "Zezedasasasq",
-            email: "dieasdassssdsadasda@rocketseat.ufape.net.nets",
-            telefone: "(91)998819091",
-            genero: "masculino",
-            dataNascimento: "1999-04-28T14:45:15",
-            password: "123456r75"
+            name: "DiegoTASB",
+            surname: "Zezedasasasq",
+            email: "dieasdassssdsadasda@rocketseat.ufape.net.netsss",
+            phone: "(30)998819091",
+            gender: "masculino",
+            birthDate: "1999-04-28T14:45:15",
+            password: "teste"
         })
         
         expect(res.statusCode).toEqual(201)
@@ -24,7 +24,7 @@ describe ("Testando User",  () => {
 
         .post('/auth/authenticate')
         .send({
-            email: "lfilipe@ufape.nets",
+            email: "dieasdassssdsadasda@rocketseat.ufape.net.netsss",
             password: "teste"
         })
         expect(res.body).toHaveProperty('user')
@@ -55,7 +55,7 @@ describe ("Testando User",  () => {
 
         .post('/auth/authenticate')
         .send({
-            email: "lfilipe@ufape.nets",
+            email: "dieasdassssdsadasda@rocketseat.ufape.net.netsss",
             password: "teste2"
         })
         expect(res.statusCode).toEqual(400)
@@ -67,5 +67,19 @@ describe ("Testando User",  () => {
         .set('Authorization', tk)
         
         expect(res.statusCode).toEqual(401)
+    }),
+    it ("Teste de update de user existente", async () => {
+        const res = await request(app)
+
+        .put('/auth/update')
+        .set('Authorization', 'Bearer '+tk)
+        .send({
+            email: "dieasdassssdsadasda@rocketseat.ufape.net.netsss",
+            name: "Luis",
+            surname: "Filipe"
+        })
+        expect(res.body).toHaveProperty('user')
+        expect(res.body).toHaveProperty('token')
+        expect(res.statusCode).toEqual(200)
     })
 })
