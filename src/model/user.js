@@ -3,11 +3,11 @@ const simplecrypt = require('simplecrypt'); //criptografar senha
 const sc = simplecrypt({salt: "10"});
 //Contruindo Modelo do Usuario
 const UserSchema = new mongoose.Schema({
-  nome: {
+  name: {
     type: String,
     required: true,
   },
-  sobrenome: {
+  surname: {
     type: String,
     required: true,
   },
@@ -22,18 +22,18 @@ const UserSchema = new mongoose.Schema({
     lowercase: true,
     select: false,
   },
-  telefone: {
+  phone: {
     type: String,
     unique: true,
     required: true,
   },
-  genero: {
+  gender: {
     type: String,
     lowercase: true,
     required: true,
   },
   //Recebe os dados no padrão DATE
-  dataNascimento: {
+  birthDate: {
     type: Date,
     required: true,
   },
