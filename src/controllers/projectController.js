@@ -9,4 +9,4 @@ router.get("/", async (req, res) => {
     res.send({ok: true, user: req.email});
 });
 
-module.exports = app => app.use('/projects', router);
+module.exports = app => app.use('/', router);

@@ -1,6 +1,14 @@
 const mongoose = require('../database');
-const simplecrypt = require('simplecrypt'); //criptografar senha
-const sc = simplecrypt({salt: "10"});
+var validate = require('mongoose-validator');
+
+var phoneValidator = [
+  validate({
+    validator: 'isLength',
+    arguments: [11, 11],
+    message: 'Phone should have 11 characters'
+  })
+];
+
 //Contruindo Modelo do Usuario
 const UserSchema = new mongoose.Schema({
   name: {
@@ -26,6 +34,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     unique: true,
     required: true,
+    validate: phoneValidator,
   },
   gender: {
     type: String,
@@ -49,15 +58,13 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  CPF_CNPJ: {
+    type: String,
+    unique: true,
+  },
 });
 
 UserSchema.pre('save', async function(next) {
-  //const salt = await bcrypt.genSalt(10);
-  // passando para hashed password
-  //this.password = await sc.encrypt(this.password);
-  // console.log(this.password);
-  //const hash = await bcrypt.hash(this.password, 10);
-  //this.password = hash;
 
   next();
 });
