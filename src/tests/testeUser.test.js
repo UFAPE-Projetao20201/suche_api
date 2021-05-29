@@ -9,8 +9,8 @@ describe ("Testando User",  () => {
         .send({
             name: "DiegoTASB",
             surname: "Zezedasasasq",
-            email: "dieasdassssdsadasda@rocketseat.ufape.net.netsss",
-            phone: "(30)998819091",
+            email: "ze@rocketseat.ufape",
+            phone: "35998819091",
             gender: "masculino",
             birthDate: "1999-04-28T14:45:15",
             password: "teste"
@@ -44,7 +44,7 @@ describe ("Testando User",  () => {
     it ("Teste de validacao de token", async () => {
         const res = await request(app)
         
-        .get('/projects')
+        .get('/')
         .set('Authorization', 'Bearer '+tk)
         
         expect(res.body).toHaveProperty('user')
@@ -63,7 +63,7 @@ describe ("Testando User",  () => {
     it ("Teste de validacao de token invalido/inexistente", async () => {
         const res = await request(app)
         
-        .get('/projects')
+        .get('/')
         .set('Authorization', tk)
         
         expect(res.statusCode).toEqual(401)
