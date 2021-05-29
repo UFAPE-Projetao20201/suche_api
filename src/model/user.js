@@ -62,6 +62,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
+  isPromoter: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 UserSchema.pre('save', async function(next) {

@@ -89,6 +89,41 @@ router.post('/authenticate', async (req,res) => {
     }
 });
 
+//promover para promotor de eventos
+router.put('/promote', async (req,res) => {
+  
+  try {
+    const { email , CPF_CNPJ }  = req.body;
+    const body = req.body;
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(400).send({ error: 'User not found' });
+    
+    if (!body.CPF_CNPJ){
+      return res.status(400).send({ error: 'No CPF_CNPJ provided' });
+    }
+    const userCheck = await User.findOne({ CPF_CNPJ });
+
+    if (userCheck){
+      return res.status(400).send({ error: 'CPF_CNPJ is already in use' });
+    }
+
+    if (user.isPromoter){
+      return res.status(404).send({ error: 'User is already a promoter' });
+    }
+    user.CPF_CNPJ = body.CPF_CNPJ;
+    user.isPromoter = true;
+    
+    
+    user.save();
+    const token = generateToken({email : user.email});
+    return res.status(200).send({ user, token })
+} catch (err) {
+    return res.status(404).send( {error: 'Cannot Update to promoter'});
+
+}
+});
+
 
 
 module.exports = app => app.use('/auth', router);
