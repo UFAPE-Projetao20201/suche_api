@@ -1,4 +1,5 @@
 const express = require('express');
+const authMiddleware = require('../middlewares/auth');
 
 const User = require('../model/user');
 
@@ -51,6 +52,8 @@ router.post('/authenticate', async (req,res) => {
     const token = generateToken({email : user.email});
     res.send({user, token});
 });
+//Rotas a seguir precisam da validação por token
+router.use(authMiddleware);
 
 //ATUALIZAR PERFIL(NAME, SURNAME, GENDER)
   router.put('/update', async (req,res) => {
@@ -87,6 +90,41 @@ router.post('/authenticate', async (req,res) => {
         return res.status(404).send( {error: 'Update error'});
 
     }
+});
+
+//promover para promotor de eventos
+router.put('/promote', async (req,res) => {
+  
+  try {
+    const { email , CPF_CNPJ }  = req.body;
+    const body = req.body;
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(400).send({ error: 'User not found' });
+    
+    if (!body.CPF_CNPJ){
+      return res.status(400).send({ error: 'No CPF_CNPJ provided' });
+    }
+    const userCheck = await User.findOne({ CPF_CNPJ });
+
+    if (userCheck){
+      return res.status(400).send({ error: 'CPF_CNPJ is already in use' });
+    }
+
+    if (user.isPromoter){
+      return res.status(404).send({ error: 'User is already a promoter' });
+    }
+    user.CPF_CNPJ = body.CPF_CNPJ;
+    user.isPromoter = true;
+    
+    
+    user.save();
+    const token = generateToken({email : user.email});
+    return res.status(200).send({ user, token })
+} catch (err) {
+    return res.status(404).send( {error: 'Cannot Update to promoter'});
+
+}
 });
 
 

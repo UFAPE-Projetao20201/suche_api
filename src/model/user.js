@@ -62,6 +62,15 @@ const UserSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
+  isPromoter: {
+    type: Boolean,
+    default: false,
+  },
+  //Eventos que confirmou presenca, servira para possibilitar avaliações no futuro
+  confirmedEvents: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Event"
+  }]
 });
 
 UserSchema.pre('save', async function(next) {
