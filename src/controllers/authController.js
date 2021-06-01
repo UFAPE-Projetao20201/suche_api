@@ -1,4 +1,5 @@
 const express = require('express');
+const authMiddleware = require('../middlewares/auth');
 
 const User = require('../model/user');
 
@@ -51,6 +52,8 @@ router.post('/authenticate', async (req,res) => {
     const token = generateToken({email : user.email});
     res.send({user, token});
 });
+//Rotas a seguir precisam da validação por token
+router.use(authMiddleware);
 
 //ATUALIZAR PERFIL(NAME, SURNAME, GENDER)
   router.put('/update', async (req,res) => {
