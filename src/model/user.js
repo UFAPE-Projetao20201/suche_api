@@ -4,8 +4,8 @@ var validate = require('mongoose-validator');
 var phoneValidator = [
   validate({
     validator: 'isLength',
-    arguments: [11, 11],
-    message: 'Phone should have 11 characters'
+    arguments: [10, 11],
+    message: 'Phone should have 10 or 11 characters'
   })
 ];
 

@@ -1,31 +1,48 @@
 const app = require("../server");
 const request = require("supertest");
 
-describe ("Testando User",  () => {
+describe ("Testando User e suas ações",  () => {
     let tk = "";
-    it ("Deve receber status de Created e o usuário corretamente", async () => {
+    it ("Teste de Creação de usuário", async () => {
         const res = await request(app)
         .post('/auth/register')
         .send({
-            name: "DiegoTASB",
-            surname: "Zezedasasasq",
-            email: "ze@rocketseat.ufape",
-            phone: "35998819091",
+            name: "Luis",
+            surname: "Filipe",
+            email: "luisf@ufape.br",
+            phone: "87981253004",
             gender: "masculino",
-            birthDate: "1999-04-28T14:45:15",
+            birthDate: "1999-11-18T14:45:15",
             password: "teste"
         })
         
         expect(res.statusCode).toEqual(201)
         expect(res.body).toHaveProperty('user')
     }),
+    it ("Teste de Criação de user com email repetido", async () => {
+        const res = await request(app)
+        .post('/auth/register')
+        .send({
+            name: "Luis",
+            surname: "Filipe",
+            email: "lf@ufape.br",
+            phone: "87981253003",
+            gender: "masculino",
+            birthDate: "1999-11-18T14:45:15",
+            password: "teste"
+        })
+        
+        expect(res.statusCode).toEqual(400)
+    }),
+
+
     it ("Teste de autenticacao de user existente", async () => {
         const res = await request(app)
 
         .post('/auth/authenticate')
         .send({
-            email: "dieasdassssdsadasda@rocketseat.ufape.net.netsss",
-            password: "teste"
+            email: "diego@ufape.br.net",
+            password: "1234567"
         })
         expect(res.body).toHaveProperty('user')
         expect(res.body).toHaveProperty('token')
@@ -36,7 +53,7 @@ describe ("Testando User",  () => {
 
         .post('/auth/authenticate')
         .send({
-            email: "dieasdassssdsadasda@rocketseat.ufape.net.kkk",
+            email: "luis@rocketseat.ufape.net",
             password: "123456r75"
         })
         expect(res.statusCode).toEqual(404)
@@ -55,7 +72,7 @@ describe ("Testando User",  () => {
 
         .post('/auth/authenticate')
         .send({
-            email: "dieasdassssdsadasda@rocketseat.ufape.net.netsss",
+            email: "lf@ufape.br",
             password: "teste2"
         })
         expect(res.statusCode).toEqual(400)
@@ -74,12 +91,71 @@ describe ("Testando User",  () => {
         .put('/auth/update')
         .set('Authorization', 'Bearer '+tk)
         .send({
-            email: "dieasdassssdsadasda@rocketseat.ufape.net.netsss",
-            name: "Luis",
-            surname: "Filipe"
+            email: "lf@ufape.br",
+            name: "Luis Filipe",
+            surname: "Santos Seixas"
         })
         expect(res.body).toHaveProperty('user')
         expect(res.body).toHaveProperty('token')
         expect(res.statusCode).toEqual(200)
+    }),
+    it ("Teste de criar evento", async () => {
+        const res = await request(app)
+
+        .post('/event')
+        .set('Authorization', 'Bearer '+tk)
+        .send({
+        promoter: "60b29fcafb05fa0b566b94c3",
+        name: "Forró do Tonho",
+        description: "Showzinho de forró pé de serra com José do Acordeon e Armstrong do Pandeiro",
+        category: "Música",
+        value: 0,
+        date: "2022-01-28T14:45:15",
+        keywords: ["Forro","Musica"],
+        localization: "60b56733f261a10a48adfc80",
+        link: "youtube.com/canaldotonho",
+        isOnline: true,
+        isLocal: true
+    })
+        expect(res.statusCode).toEqual(201)
+        expect(res.body).toHaveProperty('event')
+    }),
+    it ("Promover usuário para promotor de eventos", async() => {
+        const res = await request(app)
+
+        .put('/auth/promote')
+        .set('Authorization', 'Bearer '+tk)
+        .send({
+            email: "luisf@ufape.br",
+            CPF_CNPJ: "05301485087"
+        })
+
+        expect(res.statusCode).toEqual(200)
+        expect(res.body).toHaveProperty('user')
+        expect(res.body).toHaveProperty('token')
+    }),
+    it ("Promover usuário para promotor de eventos com CPF já em uso", async() => {
+        const res = await request(app)
+
+        .put('/auth/promote')
+        .set('Authorization', 'Bearer '+tk)
+        .send({
+            email: "lf@ufape.br",
+            CPF_CNPJ: "05801485088"
+        })
+
+        expect(res.statusCode).toEqual(400)
+    }),
+    it ("Promover usuário para promotor de eventos com user já como promotor", async() => {
+        const res = await request(app)
+
+        .put('/auth/promote')
+        .set('Authorization', 'Bearer '+tk)
+        .send({
+            email: "lf@ufape.br",
+            CPF_CNPJ: "05801485080"
+        })
+
+        expect(res.statusCode).toEqual(400)
     })
 })
