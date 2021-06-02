@@ -18,6 +18,15 @@ function generateToken( params = {}){
 router.post("/register", async (req, res) => {
     const { email, phone } =  req.body;
     try {
+        var userCheck = await User.findOne({email});
+        if (userCheck){
+          return res.status(400).send( {error: "email already in use"});
+        }
+        userCheck = await User.findOne({phone});
+        if (userCheck){
+          return res.status(400).send( {error: "phone already in use"});
+        }
+
         const user = await User.create(req.body);
 
         const token = generateToken({email : user.email});
@@ -112,7 +121,7 @@ router.put('/promote', async (req,res) => {
     }
 
     if (user.isPromoter){
-      return res.status(404).send({ error: 'User is already a promoter' });
+      return res.status(400).send({ error: 'User is already a promoter' });
     }
     user.CPF_CNPJ = body.CPF_CNPJ;
     user.isPromoter = true;
