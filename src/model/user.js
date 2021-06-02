@@ -61,6 +61,7 @@ const UserSchema = new mongoose.Schema({
   CPF_CNPJ: {
     type: String,
     unique: true,
+    sparse: true,
   },
   isPromoter: {
     type: Boolean,
