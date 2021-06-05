@@ -5,6 +5,20 @@ const Event = require('../model/event');
 
 const router = express.Router();
 
+router.get("/event", async (req,res) => {
+    try {
+        Event.find( {}, function(err,events){
+            if (err){
+                return res.status(400).send({error: "Fail to load events"});
+            }
+            return res.status(200).json(events);
+        });
+        
+    } catch (err) {
+        return res.status(404).send({error: err.message});
+    }
+});
+
 router.use(authMiddleware);
 
 router.get("/", async (req, res) => {
@@ -31,5 +45,6 @@ router.post("/localization", async (req,res) => {
         return res.status(404).send({error: err.message});
     }
 });
+
 
 module.exports = app => app.use('/', router);
