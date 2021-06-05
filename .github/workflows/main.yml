@@ -12,6 +12,6 @@ jobs:
         SOURCE_REPO: "https://github.com/UFAPE-Projetao20201/suche_api.git"
         SOURCE_BRANCH: "main"
         DESTINATION_REPO: ${{ secrets.GLITCH_GIT_URL }}
-        DESTINATIO_BRANCH: "main"
+        DESTINATIO_BRANCH: "master"
       with:
         args: $SOURCE_REPO $SOURCE_BRANCH $DESTINATION_REPO $DESTINATIO_BRANCH
