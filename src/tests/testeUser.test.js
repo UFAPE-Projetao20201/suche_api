@@ -7,12 +7,12 @@ describe ("Testando User e suas ações",  () => {
         const res = await request(app)
         .post('/auth/register')
         .send({
-            name: "Luis",
-            surname: "Filipe",
-            email: "luisf@ufape.br",
-            phone: "87981253004",
-            gender: "masculino",
-            birthDate: "1999-11-18T14:45:15",
+            name: "Julia",
+            surname: "Alboredo",
+            email: "jualboredo@ufape.br",
+            phone: "11981253004",
+            gender: "feminino",
+            birthDate: "1995-11-18T14:45:15",
             password: "teste"
         })
         
@@ -41,8 +41,8 @@ describe ("Testando User e suas ações",  () => {
 
         .post('/auth/authenticate')
         .send({
-            email: "diego@ufape.br.net",
-            password: "1234567"
+            email: "jualboredo@ufape.br",
+            password: "teste"
         })
         expect(res.body).toHaveProperty('user')
         expect(res.body).toHaveProperty('token')
@@ -99,6 +99,7 @@ describe ("Testando User e suas ações",  () => {
         expect(res.body).toHaveProperty('token')
         expect(res.statusCode).toEqual(200)
     }),
+
     it ("Teste de criar evento", async () => {
         const res = await request(app)
 
@@ -157,5 +158,16 @@ describe ("Testando User e suas ações",  () => {
         })
 
         expect(res.statusCode).toEqual(400)
+    })
+})
+
+describe ("Testando Listagens de eventos",  () => {
+    it ("Receber todos Eventos", async() => {
+        const res = await request(app)
+
+        .get('/event')
+        .send({})
+
+        expect(res.statusCode).toEqual(200)
     })
 })
