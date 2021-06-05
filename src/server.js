@@ -10,6 +10,8 @@ app.set("port" , port);
 const server = http.createServer(app);
 server.listen(port)
 
+console.log('API rodando na porta ' + port);
+
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
