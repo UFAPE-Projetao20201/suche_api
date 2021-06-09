@@ -3,14 +3,14 @@ const request = require("supertest");
 
 describe ("Testando User e suas ações",  () => {
     let tk = "";
-    it ("Teste de Creação de usuário", async () => {
+    it ("Teste de Criação de usuário", async () => {
         const res = await request(app)
         .post('/auth/register')
         .send({
             name: "Julia",
             surname: "Alboredo",
-            email: "jualboredo@ufape.br",
-            phone: "11981253004",
+            email: "juaboredo@ufape.br",
+            phone: "11988253004",
             gender: "feminino",
             birthDate: "1995-11-18T14:45:15",
             password: "teste"
@@ -127,8 +127,8 @@ describe ("Testando User e suas ações",  () => {
         .put('/auth/promote')
         .set('Authorization', 'Bearer '+tk)
         .send({
-            email: "luisf@ufape.br",
-            CPF_CNPJ: "05301485087"
+            email: "juaboredo@ufape.br",
+            CPF_CNPJ: "08301485087"
         })
 
         expect(res.statusCode).toEqual(200)
