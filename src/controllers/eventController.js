@@ -7,9 +7,37 @@ const router = express.Router();
 
 router.get("/event", async (req,res) => {
     try {
-        Event.find( {}, function(err,events){
+        Event.find( {date: { $gte: Date.now() }}, null, {sort: "date"}, function(err,events){
             if (err){
                 return res.status(400).send({error: "Fail to load events"});
+            }
+            return res.status(200).json(events);
+        });
+        
+    } catch (err) {
+        return res.status(404).send({error: err.message});
+    }
+});
+
+router.get("/eventpresential", async (req,res) => {
+    try {
+        Event.find( { isLocal: true, date: { $gte: Date.now() }}, null, {sort: "date"}, function(err,events){
+            if (err){
+                return res.status(400).send({error: "Fail to load presential events"});
+            }
+            return res.status(200).json(events);
+        });
+        
+    } catch (err) {
+        return res.status(404).send({error: err.message});
+    }
+});
+
+router.get("/eventonline", async (req,res) => {
+    try {
+        Event.find( { isOnline: true, date: { $gte: Date.now() }}, null, {sort: "date"}, function(err,events){
+            if (err){
+                return res.status(400).send({error: "Fail to load presential events"});
             }
             return res.status(200).json(events);
         });
