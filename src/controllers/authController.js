@@ -49,7 +49,7 @@ router.get('/user', async (req,res) => {
     return res.status(200).send({ user });
 
 } catch (err) {
-    return res.status(404).send( {error: 'Cannot Update to promoter'});
+    return res.status(404).send( {error: 'Fail to get user'});
 
   }
 });
