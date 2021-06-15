@@ -3,5 +3,6 @@
 # Suche-API
 Repositório da API para o Suche
 Disciplina de Projetão 2020.1
+Antônio Adelino, Armstrong Lohâns, Daniel Henrique, José Vieira, Luís Filipe 
 
 <!-- #5 Teste de automação de deploy no Glitch -->
