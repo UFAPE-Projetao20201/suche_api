@@ -7,11 +7,11 @@ describe ("Testando User e suas ações",  () => {
         const res = await request(app)
         .post('/auth/register')
         .send({
-            name: "Julia",
-            surname: "Alboredo",
-            email: "juaboredo@ufape.br",
-            phone: "11988253004",
-            gender: "feminino",
+            name: "Jeff",
+            surname: "Alves",
+            email: "jeff@ufape.br",
+            phone: "15988253003",
+            gender: "masculino",
             birthDate: "1995-11-18T14:45:15",
             password: "teste"
         })
@@ -41,7 +41,7 @@ describe ("Testando User e suas ações",  () => {
 
         .post('/auth/authenticate')
         .send({
-            email: "jualboredo@ufape.br",
+            email: "juaboredo@ufape.br",
             password: "teste"
         })
         expect(res.body).toHaveProperty('user')
@@ -127,8 +127,8 @@ describe ("Testando User e suas ações",  () => {
         .put('/auth/promote')
         .set('Authorization', 'Bearer '+tk)
         .send({
-            email: "juaboredo@ufape.br",
-            CPF_CNPJ: "08301485087"
+            email: "jeff@ufape.br",
+            CPF_CNPJ: "05316416453"
         })
 
         expect(res.statusCode).toEqual(200)
@@ -158,6 +158,18 @@ describe ("Testando User e suas ações",  () => {
         })
 
         expect(res.statusCode).toEqual(400)
+    }),
+    it ("Receber usuário", async() => {
+        const res = await request(app)
+
+        .get('/auth/user')
+        .set('Authorization', 'Bearer '+tk)
+        .send({
+            email: "lf@ufape.br",
+            CPF_CNPJ: "05801485080"
+        })
+
+        expect(res.statusCode).toEqual(200)
     })
 })
 
@@ -166,6 +178,22 @@ describe ("Testando Listagens de eventos",  () => {
         const res = await request(app)
 
         .get('/event')
+        .send({})
+
+        expect(res.statusCode).toEqual(200)
+    }),
+    it ("Receber todos Eventos Presenciais", async() => {
+        const res = await request(app)
+
+        .get('/eventpresential')
+        .send({})
+
+        expect(res.statusCode).toEqual(200)
+    }),
+    it ("Receber todos Eventos Online", async() => {
+        const res = await request(app)
+
+        .get('/eventonline')
         .send({})
 
         expect(res.statusCode).toEqual(200)

@@ -38,6 +38,22 @@ router.post("/register", async (req, res) => {
     }
 });
 
+router.get('/user', async (req,res) => {
+  
+  try {
+    const { email }  = req.body;
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(400).send({ error: 'User not found' });
+    
+    return res.status(200).send({ user });
+
+} catch (err) {
+    return res.status(404).send( {error: 'Fail to get user'});
+
+  }
+});
+
 //AUTENTICACAO DE LOGIN
 router.post('/authenticate', async (req,res) => {
     const { email, password}  = req.body;
