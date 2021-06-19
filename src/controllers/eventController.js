@@ -47,6 +47,21 @@ router.get("/eventonline", async (req,res) => {
     }
 });
 
+router.get("/eventcategory", async (req,res) => {
+    try {
+        const { category }  = req.body;
+        Event.find( { category: category, date: { $gte: Date.now() }}, null, {sort: "date"}, function(err,events){
+            if (err){
+                return res.status(400).send({error: "Fail to load events:"+category});
+            }
+            return res.status(200).json(events);
+        });
+        
+    } catch (err) {
+        return res.status(404).send({error: err.message});
+    }
+});
+
 router.use(authMiddleware);
 
 router.get("/", async (req, res) => {
