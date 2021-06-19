@@ -7,9 +7,9 @@ describe ("Testando User e suas ações",  () => {
         const res = await request(app)
         .post('/auth/register')
         .send({
-            name: "Jefferson",
+            name: "Julio",
             surname: "Alves",
-            email: "jefferson@ufape.br",
+            email: "julio@ufape.br",
             phone: "15988253003",
             gender: "masculino",
             birthDate: "1995-11-18T14:45:15",
@@ -127,8 +127,8 @@ describe ("Testando User e suas ações",  () => {
         .put('/auth/promote')
         .set('Authorization', 'Bearer '+tk)
         .send({
-            email: "jefferson@ufape.br",
-            CPF_CNPJ: "05316416457"
+            email: "julio@ufape.br",
+            CPF_CNPJ: "05886416457"
         })
 
         expect(res.statusCode).toEqual(200)
