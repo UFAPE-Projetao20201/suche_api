@@ -10,7 +10,7 @@ describe ("Testando User e suas ações",  () => {
             name: "Julio",
             surname: "Alves",
             email: "julio@ufape.br",
-            phone: "15988253003",
+            phone: "32988253003",
             gender: "masculino",
             birthDate: "1995-11-18T14:45:15",
             password: "teste"
