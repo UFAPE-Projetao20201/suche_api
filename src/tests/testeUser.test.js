@@ -7,10 +7,10 @@ describe ("Testando User e suas ações",  () => {
         const res = await request(app)
         .post('/auth/register')
         .send({
-            name: "Jeff",
+            name: "Julio",
             surname: "Alves",
-            email: "jeff@ufape.br",
-            phone: "15988253003",
+            email: "julio@ufape.br",
+            phone: "32988253003",
             gender: "masculino",
             birthDate: "1995-11-18T14:45:15",
             password: "teste"
@@ -111,7 +111,7 @@ describe ("Testando User e suas ações",  () => {
         description: "Showzinho de forró pé de serra com José do Acordeon e Armstrong do Pandeiro",
         category: "Música",
         value: 0,
-        date: "2022-01-28T14:45:15",
+        date: "2001-01-28T14:45:15",
         keywords: ["Forro","Musica"],
         localization: "60b56733f261a10a48adfc80",
         link: "youtube.com/canaldotonho",
@@ -127,8 +127,8 @@ describe ("Testando User e suas ações",  () => {
         .put('/auth/promote')
         .set('Authorization', 'Bearer '+tk)
         .send({
-            email: "jeff@ufape.br",
-            CPF_CNPJ: "05316416453"
+            email: "julio@ufape.br",
+            CPF_CNPJ: "05886416457"
         })
 
         expect(res.statusCode).toEqual(200)
@@ -195,6 +195,14 @@ describe ("Testando Listagens de eventos",  () => {
 
         .get('/eventonline')
         .send({})
+
+        expect(res.statusCode).toEqual(200)
+    }),
+    it ("Receber todos Eventos por Categoria", async() => {
+        const res = await request(app)
+
+        .get('/eventonline')
+        .send({categoria: "Música"})
 
         expect(res.statusCode).toEqual(200)
     })
