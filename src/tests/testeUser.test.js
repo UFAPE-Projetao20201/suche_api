@@ -113,7 +113,10 @@ describe ("Testando User e suas ações",  () => {
         value: 0,
         date: "2001-01-28T14:45:15",
         keywords: ["Forro","Musica"],
-        localization: "60b56733f261a10a48adfc80",
+        localization: { street: "Rua Principal",
+        city: "Garanhuns",
+        CEP: "55299387",
+        number: 400},
         link: "youtube.com/canaldotonho",
         isOnline: true,
         isLocal: true
