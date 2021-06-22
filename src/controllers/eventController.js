@@ -70,7 +70,14 @@ router.get("/", async (req, res) => {
 
 router.post("/event", async (req,res) => {
     try {
-        const event = await Event.create(req.body);
+        const place = req.body.localization
+        const localization = await Localization.create(place);
+        if (!localization){
+            return res.status(400).send({error: "Local inválido"})
+        }
+        var body = req.body
+        body.localization = localization
+        const event = await Event.create(body);
         
 
         return res.status(201).send({event});
