@@ -2,6 +2,7 @@ const express = require('express');
 const authMiddleware = require('../middlewares/auth');
 const Localization = require('../model/localization');
 const Event = require('../model/event');
+const User = require('../model/user');
 
 const router = express.Router();
 
@@ -13,7 +14,8 @@ router.get("/event", async (req,res) => {
             }
             for (var i = 0; i < events.length; i++){
                 var local = await Localization.findById(events[i].localization);
-
+                var user = await User.findById(events[i].promoter);
+                events[i].promoter = user;
                 events[i].localization = local;
                 
             }
@@ -33,6 +35,8 @@ router.get("/eventpresential", async (req,res) => {
             }
             for (var i = 0; i < events.length; i++){
                 var local = await Localization.findById(events[i].localization);
+                var user = await User.findById(events[i].promoter);
+                events[i].promoter = user;
 
                 events[i].localization = local;
                 
@@ -53,6 +57,8 @@ router.get("/eventonline", async (req,res) => {
             }
             for (var i = 0; i < events.length; i++){
                 var local = await Localization.findById(events[i].localization);
+                var user = await User.findById(events[i].promoter);
+                events[i].promoter = user;
 
                 events[i].localization = local;
                 
@@ -74,6 +80,8 @@ router.get("/eventcategory", async (req,res) => {
             }
             for (var i = 0; i < events.length; i++){
                 var local = await Localization.findById(events[i].localization);
+                var user = await User.findById(events[i].promoter);
+                events[i].promoter = user;
 
                 events[i].localization = local;
                 
