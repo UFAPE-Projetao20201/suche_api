@@ -7,9 +7,15 @@ const router = express.Router();
 
 router.get("/event", async (req,res) => {
     try {
-        Event.find( {date: { $gte: Date.now() }}, null, {sort: "date"}, function(err,events){
+        Event.find( {date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
             if (err){
                 return res.status(400).send({error: "Fail to load events"});
+            }
+            for (var i = 0; i < events.length; i++){
+                var local = await Localization.findById(events[i].localization);
+
+                events[i].localization = local;
+                
             }
             return res.status(200).json(events);
         });
@@ -21,9 +27,15 @@ router.get("/event", async (req,res) => {
 
 router.get("/eventpresential", async (req,res) => {
     try {
-        Event.find( { isLocal: true, date: { $gte: Date.now() }}, null, {sort: "date"}, function(err,events){
+        Event.find( { isLocal: true, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
             if (err){
                 return res.status(400).send({error: "Fail to load presential events"});
+            }
+            for (var i = 0; i < events.length; i++){
+                var local = await Localization.findById(events[i].localization);
+
+                events[i].localization = local;
+                
             }
             return res.status(200).json(events);
         });
@@ -35,9 +47,15 @@ router.get("/eventpresential", async (req,res) => {
 
 router.get("/eventonline", async (req,res) => {
     try {
-        Event.find( { isOnline: true, date: { $gte: Date.now() }}, null, {sort: "date"}, function(err,events){
+        Event.find( { isOnline: true, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
             if (err){
                 return res.status(400).send({error: "Fail to load presential events"});
+            }
+            for (var i = 0; i < events.length; i++){
+                var local = await Localization.findById(events[i].localization);
+
+                events[i].localization = local;
+                
             }
             return res.status(200).json(events);
         });
@@ -50,9 +68,15 @@ router.get("/eventonline", async (req,res) => {
 router.get("/eventcategory", async (req,res) => {
     try {
         const { category }  = req.body;
-        Event.find( { category: category, date: { $gte: Date.now() }}, null, {sort: "date"}, function(err,events){
+        Event.find( { category: category, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
             if (err){
                 return res.status(400).send({error: "Fail to load events:"+category});
+            }
+            for (var i = 0; i < events.length; i++){
+                var local = await Localization.findById(events[i].localization);
+
+                events[i].localization = local;
+                
             }
             return res.status(200).json(events);
         });
@@ -84,10 +108,11 @@ router.post("/event", async (req,res) => {
         }
         
         body.localization = localization
-        const event = await Event.create(body);
-        
+        var event = await Event.create(body);
+        event.localization = await Localization.findById(event.localization);
 
         return res.status(201).send({event});
+
     } catch (err) {
         return res.status(404).send({error: err.message});
     }
