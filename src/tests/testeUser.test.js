@@ -124,6 +124,26 @@ describe ("Testando User e suas ações",  () => {
         expect(res.statusCode).toEqual(201)
         expect(res.body).toHaveProperty('event')
     }),
+    it ("Teste de criar evento presencial sem local", async () => {
+        const res = await request(app)
+
+        .post('/event')
+        .set('Authorization', 'Bearer '+tk)
+        .send({
+        promoter: "60b29fcafb05fa0b566b94c3",
+        name: "Forró do Tonho",
+        description: "Showzinho de forró pé de serra com José do Acordeon e Armstrong do Pandeiro",
+        category: "Música",
+        value: 0,
+        date: "2001-01-28T14:45:15",
+        keywords: ["Forro","Musica"],
+    
+        link: "youtube.com/canaldotonho",
+        isOnline: true,
+        isLocal: true
+    })
+        expect(res.statusCode).toEqual(400)
+    }),
     it ("Promover usuário para promotor de eventos", async() => {
         const res = await request(app)
 
