@@ -204,7 +204,7 @@ describe ("Testando Listagens de eventos",  () => {
         .send({})
 
         expect(res.statusCode).toEqual(200)
-    }),
+    },30000),
     it ("Receber todos Eventos Presenciais", async() => {
         const res = await request(app)
 
@@ -212,7 +212,7 @@ describe ("Testando Listagens de eventos",  () => {
         .send({})
 
         expect(res.statusCode).toEqual(200)
-    }),
+    },30000),
     it ("Receber todos Eventos Online", async() => {
         const res = await request(app)
 
@@ -220,7 +220,7 @@ describe ("Testando Listagens de eventos",  () => {
         .send({})
 
         expect(res.statusCode).toEqual(200)
-    }),
+    },30000),
     it ("Receber todos Eventos por Categoria", async() => {
         const res = await request(app)
 
@@ -228,5 +228,5 @@ describe ("Testando Listagens de eventos",  () => {
         .send({categoria: "Música"})
 
         expect(res.statusCode).toEqual(200)
-    })
+    },30000)
 })
