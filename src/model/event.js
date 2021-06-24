@@ -5,6 +5,7 @@ const EventSchema = new mongoose.Schema({
   promoter: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
   name: {
     type: String,
