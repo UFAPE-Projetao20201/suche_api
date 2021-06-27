@@ -221,11 +221,19 @@ describe ("Testando Listagens de eventos",  () => {
 
         expect(res.statusCode).toEqual(200)
     },30000),
-    it ("Receber todos Eventos por Categoria", async() => {
+    it ("Receber todos Eventos Presenciais dado nome e/ou categoria", async() => {
+        const res = await request(app)
+
+        .get('/eventpresential')
+        .send({category: "Música"})
+
+        expect(res.statusCode).toEqual(200)
+    },30000),
+    it ("Receber todos Eventos Online dado nome e/ou categoria", async() => {
         const res = await request(app)
 
         .get('/eventonline')
-        .send({categoria: "Música"})
+        .send({category: "Shows", name: "Sao"})
 
         expect(res.statusCode).toEqual(200)
     },30000)
