@@ -47,7 +47,7 @@ router.get("/eventpresential", async (req,res) => {
         });
         }
         else if ( category == null || !category){
-            Event.find( { isOnline: true, "name": {"$regex": name,"$options":"i"}, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
+            Event.find( { isLocal: true, "name": {"$regex": name,"$options":"i"}, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
                 if (err){
                     return res.status(400).send({error: "Fail to load presential events"});
                 }
@@ -63,7 +63,7 @@ router.get("/eventpresential", async (req,res) => {
                 });
         }
         else if ( name == null || !name){
-            Event.find( { isOnline: true, category: category, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
+            Event.find( { isLocal: true, category: category, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
                 if (err){
                     return res.status(400).send({error: "Fail to load presential events"});
                 }
@@ -79,7 +79,7 @@ router.get("/eventpresential", async (req,res) => {
                 });
         }
         else{
-            Event.find( { isOnline: true, "name": {"$regex": name,"$options":"i"}, category: category, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
+            Event.find( { isLocal: true, "name": {"$regex": name,"$options":"i"}, category: category, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
                 if (err){
                     return res.status(400).send({error: "Fail to load presential events"});
                 }
