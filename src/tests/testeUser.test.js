@@ -193,6 +193,20 @@ describe ("Testando User e suas ações",  () => {
         })
 
         expect(res.statusCode).toEqual(200)
+    }),
+    it ("Confirmar presença", async() => {
+        const res = await request(app)
+
+        .post('/confirm')
+        .set('Authorization', 'Bearer '+tk)
+        .send({
+            email: "julio@ufape.br",
+            eventID: "60da5b6f34ae7400dcc686a9"
+        })
+
+        expect(res.statusCode).toEqual(200)
+        expect(res.body).toHaveProperty('user')
+        expect(res.body).toHaveProperty('event')
     })
 })
 

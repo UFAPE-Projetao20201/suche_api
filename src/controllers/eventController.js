@@ -236,5 +236,77 @@ router.post("/localization", async (req,res) => {
     }
 });
 
+router.post("/confirm", async (req,res) => {
+    try {
+        const {email, eventID} = req.body;
+        const user = await User.findOne({email});
+
+        const event = await Event.findById(eventID);
+
+        if (!user){
+            return res.status(404).send({error: "User not found"});
+        }
+        if (!event){
+            return res.status(404).send({error: "Event not found"});
+        }
+
+        var confirmeds = user.confirmedEvents
+
+        for (let index = 0; index < confirmeds.length; index++) {
+            const element = confirmeds[index];
+            if (element == event.id){
+                return res.status(400).send({error: "Event already confirmed"})
+            }
+            
+        }
+        user.confirmedEvents.push(event);
+
+        user.save();
+        event.confirmedUsers.push(user);
+        event.save();
+        
+        return res.status(200).send({user,event});
+    } catch (err) {
+        return res.status(404).send({error: err.message});
+    }
+});
+
+router.post("/unconfirm", async (req,res) => {
+    try {
+        const {email, eventID} = req.body;
+        const user = await User.findOne({email});
+
+        const event = await Event.findById(eventID);
+
+        if (!user){
+            return res.status(404).send({error: "User not found"});
+        }
+        if (!event){
+            return res.status(404).send({error: "Event not found"});
+        }
+
+        var confirmeds = user.confirmedEvents
+        var check = false
+        for (let index = 0; index < confirmeds.length; index++) {
+            const element = confirmeds[index];
+            if (element == event.id){
+                user.confirmedEvents.pop(event);
+                check = true;
+            }
+            
+        }
+        user.save();
+        if(check){
+            event.confirmedUsers.pop(user);
+            event.save();
+        }
+        
+        
+        return res.status(200).send({user,event});
+    } catch (err) {
+        return res.status(404).send({error: err.message});
+    }
+});
+
 
 module.exports = app => app.use('/', router);

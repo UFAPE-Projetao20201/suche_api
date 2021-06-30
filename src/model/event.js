@@ -44,7 +44,11 @@ const EventSchema = new mongoose.Schema({
   isLocal: {
     type: Boolean,
     required: true,
-  }
+  },
+  confirmedUsers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  }]
 
 });
 
