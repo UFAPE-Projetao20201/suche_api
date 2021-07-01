@@ -208,7 +208,7 @@ describe ("Testando User e suas ações",  () => {
         expect(res.body).toHaveProperty('user')
         expect(res.body).toHaveProperty('event')
     }),
-    it ("Confirmar presença", async() => {
+    it ("Desconfirmar presença", async() => {
         const res = await request(app)
 
         .post('/unconfirm')
