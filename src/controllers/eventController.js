@@ -29,7 +29,7 @@ router.get("/event", async (req,res) => {
 
 router.get("/eventpresential", async (req,res) => {
     try {
-        const { category, name}  = req.body;
+        const { category, name}  = req.query;
         if ((!category && !name)||(category == null && name == null)){
         Event.find( { isLocal: true, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
             if (err){
@@ -101,7 +101,7 @@ router.get("/eventpresential", async (req,res) => {
 
 router.get("/eventonline", async (req,res) => {
     try {
-        const { category, name}  = req.body;
+        const { category, name}  = req.query;
         if ((!category && !name)||(category == null && name == null)){
             Event.find( { isOnline: true, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
             if (err){
@@ -173,7 +173,7 @@ router.get("/eventonline", async (req,res) => {
 
 router.get("/eventcategory", async (req,res) => {
     try {
-        const { category }  = req.body;
+        const { category }  = req.query;
         Event.find( { category: category, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
             if (err){
                 return res.status(400).send({error: "Fail to load events:"+category});
@@ -240,7 +240,6 @@ router.post("/confirm", async (req,res) => {
     try {
         const {email, eventID} = req.body;
         const user = await User.findOne({email});
-
         const event = await Event.findById(eventID);
 
         if (!user){
@@ -260,7 +259,6 @@ router.post("/confirm", async (req,res) => {
             
         }
         user.confirmedEvents.push(event);
-
         user.save();
         event.confirmedUsers.push(user);
         event.save();
@@ -275,7 +273,6 @@ router.post("/unconfirm", async (req,res) => {
     try {
         const {email, eventID} = req.body;
         const user = await User.findOne({email});
-
         const event = await Event.findById(eventID);
 
         if (!user){

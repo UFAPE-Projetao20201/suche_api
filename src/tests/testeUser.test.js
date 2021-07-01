@@ -207,6 +207,20 @@ describe ("Testando User e suas ações",  () => {
         expect(res.statusCode).toEqual(200)
         expect(res.body).toHaveProperty('user')
         expect(res.body).toHaveProperty('event')
+    }),
+    it ("Confirmar presença", async() => {
+        const res = await request(app)
+
+        .post('/unconfirm')
+        .set('Authorization', 'Bearer '+tk)
+        .send({
+            email: "julio@ufape.br",
+            eventID: "60da5b6f34ae7400dcc686a9"
+        })
+
+        expect(res.statusCode).toEqual(200)
+        expect(res.body).toHaveProperty('user')
+        expect(res.body).toHaveProperty('event')
     })
 })
 
@@ -239,7 +253,7 @@ describe ("Testando Listagens de eventos",  () => {
         const res = await request(app)
 
         .get('/eventpresential')
-        .send({category: "Música"})
+        .query({category: "Música"})
 
         expect(res.statusCode).toEqual(200)
     },30000),
@@ -247,7 +261,7 @@ describe ("Testando Listagens de eventos",  () => {
         const res = await request(app)
 
         .get('/eventonline')
-        .send({category: "Shows", name: "Sao"})
+        .query({category: "Shows", name: "Sao"})
 
         expect(res.statusCode).toEqual(200)
     },30000)
