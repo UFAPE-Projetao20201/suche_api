@@ -264,5 +264,22 @@ describe ("Testando Listagens de eventos",  () => {
         .query({category: "Shows", name: "Sao"})
 
         expect(res.statusCode).toEqual(200)
+    },30000),
+    it ("Receber todos Eventos confirmados", async() => {
+        const res = await request(app)
+
+        .get('/confirmedevents')
+        .query({email: "julio@ufape.br"})
+
+        expect(res.statusCode).toEqual(200)
+    },30000),
+    it ("Receber todos Eventos que já foi", async() => {
+        const res = await request(app)
+
+        .get('/pastevents')
+        .query({email: "julio@ufape.br"})
+
+        expect(res.statusCode).toEqual(200)
     },30000)
+
 })
