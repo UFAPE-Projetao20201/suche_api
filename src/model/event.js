@@ -45,6 +45,11 @@ const EventSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  ratings: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Rating"
+  }],
+
   confirmedUsers: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"

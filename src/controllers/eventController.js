@@ -194,6 +194,60 @@ router.get("/eventcategory", async (req,res) => {
     }
 });
 
+router.get("/confirmedevents", async (req,res) => {
+    try{
+        const { email }  = req.query;
+        const user = await User.findOne({email});
+
+        if (!user){
+            return res.status(400).send({error: "User not found"});
+        }
+        var myEvents = [];
+
+        var confirmeds = user.confirmedEvents;
+
+        for (let index = 0; index < confirmeds.length; index++) {
+            const element = confirmeds[index];
+            var event = await Event.findById(element);
+
+            if (Date.now() < event.date){
+                myEvents.push(event);
+            } 
+        }
+        return res.status(200).json(myEvents);
+
+    }catch (err){
+        return res.status(404).send({error: err.message});  
+    }
+});
+
+router.get("/pastevents", async (req,res) => {
+    try{
+        const { email }  = req.query;
+        const user = await User.findOne({email});
+
+        if (!user){
+            return res.status(400).send({error: "User not found"});
+        }
+        var myEvents = [];
+
+        var confirmeds = user.confirmedEvents;
+
+        for (let index = 0; index < confirmeds.length; index++) {
+            const element = confirmeds[index];
+            var event = await Event.findById(element);
+
+            if (Date.now() > event.date){
+                myEvents.push(event);
+            } 
+        }
+        return res.status(200).json(myEvents);
+
+    }catch (err){
+        return res.status(404).send({error: err.message});  
+    }
+});
+
 router.use(authMiddleware);
 
 router.get("/", async (req, res) => {
