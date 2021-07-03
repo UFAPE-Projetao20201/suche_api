@@ -29,7 +29,17 @@ router.get("/event", async (req,res) => {
 
 router.get("/eventpresential", async (req,res) => {
     try {
-        const { category, name}  = req.query;
+        const { category, name, email}  = req.query;
+        const user = await User.findOne({email});
+
+        if (!user){
+            return res.status(400).send({error: "User not found"});
+        }
+        var myEvents = [];
+
+        var confirmeds = user.confirmedEvents;
+        var eventsIn = [];
+
         if ((!category && !name)||(category == null && name == null)){
         Event.find( { isLocal: true, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
             if (err){
@@ -41,9 +51,18 @@ router.get("/eventpresential", async (req,res) => {
                 events[i].promoter = user;
 
                 events[i].localization = local;
-                
+
+                var item = {event: events[i], imIn: false}
+                for (let index = 0; index < confirmeds.length; index++) {
+                    const element = confirmeds[index];
+        
+                    if (element == events[i].id){
+                        item = {event: events[i], imIn: true}
+                    }
+                }   
+                eventsIn.push(item)
             }
-            return res.status(200).json(events);
+            return res.status(200).json(eventsIn);
         });
         }
         else if ( category == null || !category){
@@ -57,9 +76,18 @@ router.get("/eventpresential", async (req,res) => {
                     events[i].promoter = user;
     
                     events[i].localization = local;
-                    
+
+                    var item = {event: events[i], imIn: false}
+                    for (let index = 0; index < confirmeds.length; index++) {
+                        const element = confirmeds[index];
+            
+                        if (element == events[i].id){
+                            item = {event: events[i], imIn: true}
+                        }
+                    }   
+                    eventsIn.push(item)
                 }
-                return res.status(200).json(events);
+                return res.status(200).json(eventsIn);
                 });
         }
         else if ( name == null || !name){
@@ -73,9 +101,19 @@ router.get("/eventpresential", async (req,res) => {
                     events[i].promoter = user;
     
                     events[i].localization = local;
+
+                    var item = {event: events[i], imIn: false}
+                    for (let index = 0; index < confirmeds.length; index++) {
+                        const element = confirmeds[index];
+            
+                        if (element == events[i].id){
+                            item = {event: events[i], imIn: true}
+                        }
+                    }   
+                    eventsIn.push(item)
+                }   
                     
-                }
-                return res.status(200).json(events);
+                return res.status(200).json(eventsIn);
                 });
         }
         else{
@@ -89,9 +127,18 @@ router.get("/eventpresential", async (req,res) => {
                     events[i].promoter = user;
     
                     events[i].localization = local;
-                    
+
+                    var item = {event: events[i], imIn: false}
+                    for (let index = 0; index < confirmeds.length; index++) {
+                        const element = confirmeds[index];
+            
+                        if (element == events[i].id){
+                            item = {event: events[i], imIn: true}
+                        }
+                    }   
+                    eventsIn.push(item)
                 }
-                return res.status(200).json(events);
+                return res.status(200).send(eventsIn);
                 });
         }
     } catch (err) {
@@ -101,7 +148,17 @@ router.get("/eventpresential", async (req,res) => {
 
 router.get("/eventonline", async (req,res) => {
     try {
-        const { category, name}  = req.query;
+        const { category, name, email}  = req.query;
+        const user = await User.findOne({email});
+
+        if (!user){
+            return res.status(400).send({error: "User not found"});
+        }
+        var myEvents = [];
+
+        var confirmeds = user.confirmedEvents;
+        var eventsIn = [];
+
         if ((!category && !name)||(category == null && name == null)){
             Event.find( { isOnline: true, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
             if (err){
@@ -114,8 +171,17 @@ router.get("/eventonline", async (req,res) => {
 
                 events[i].localization = local;
                 
+                var item = {event: events[i], imIn: false}
+                    for (let index = 0; index < confirmeds.length; index++) {
+                        const element = confirmeds[index];
+            
+                        if (element == events[i].id){
+                            item = {event: events[i], imIn: true}
+                        }
+                    }   
+                    eventsIn.push(item)
             }
-            return res.status(200).json(events);
+            return res.status(200).json(eventsIn);
             });
         }
         else if ( category == null || !category){
@@ -129,9 +195,18 @@ router.get("/eventonline", async (req,res) => {
                     events[i].promoter = user;
     
                     events[i].localization = local;
-                    
+
+                    var item = {event: events[i], imIn: false}
+                    for (let index = 0; index < confirmeds.length; index++) {
+                        const element = confirmeds[index];
+            
+                        if (element == events[i].id){
+                            item = {event: events[i], imIn: true}
+                        }
+                    }   
+                    eventsIn.push(item)
                 }
-                return res.status(200).json(events);
+                return res.status(200).json(eventsIn);
                 });
         }
         else if ( name == null || !name){
@@ -146,8 +221,17 @@ router.get("/eventonline", async (req,res) => {
     
                     events[i].localization = local;
                     
+                    var item = {event: events[i], imIn: false}
+                    for (let index = 0; index < confirmeds.length; index++) {
+                        const element = confirmeds[index];
+            
+                        if (element == events[i].id){
+                            item = {event: events[i], imIn: true}
+                        }
+                    }   
+                    eventsIn.push(item)
                 }
-                return res.status(200).json(events);
+                return res.status(200).json(eventsIn);
                 });
         }
         else{
@@ -162,8 +246,17 @@ router.get("/eventonline", async (req,res) => {
     
                     events[i].localization = local;
                     
+                    var item = {event: events[i], imIn: false}
+                    for (let index = 0; index < confirmeds.length; index++) {
+                        const element = confirmeds[index];
+            
+                        if (element == events[i].id){
+                            item = {event: events[i], imIn: true}
+                        }
+                    }   
+                    eventsIn.push(item)
                 }
-                return res.status(200).json(events);
+                return res.status(200).json(eventsIn);
                 });
         }
     } catch (err) {
@@ -210,6 +303,8 @@ router.get("/confirmedevents", async (req,res) => {
             const element = confirmeds[index];
             var event = await Event.findById(element);
 
+            event.promoter = user;
+
             if (Date.now() < event.date){
                 myEvents.push(event);
             } 
@@ -236,6 +331,8 @@ router.get("/pastevents", async (req,res) => {
         for (let index = 0; index < confirmeds.length; index++) {
             const element = confirmeds[index];
             var event = await Event.findById(element);
+
+            event.promoter = user;
 
             if (Date.now() > event.date){
                 myEvents.push(event);
