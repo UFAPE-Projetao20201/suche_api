@@ -1,5 +1,5 @@
 ![Imgur](https://i.imgur.com/YR8fRkP.png)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1904cb8f7d0e46c7bab894dcecb0413a)](https://app.codacy.com/gh/UFAPE-Projetao20201/suche_api?utm_source=github.com&utm_medium=referral&utm_content=UFAPE-Projetao20201/suche_api&utm_campaign=Badge_Grade_Settings)
+[![codebeat badge](https://codebeat.co/badges/ec91ded5-d95f-4005-951d-b5fba061f2fd)](https://codebeat.co/projects/github-com-ufape-projetao20201-suche_api-main)
 [![Build Status](https://travis-ci.com/UFAPE-Projetao20201/suche_api.svg?branch=main)](https://travis-ci.com/UFAPE-Projetao20201/suche_api)
 # Suche-API
 Repositório da API para o Suche
