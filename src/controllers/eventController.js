@@ -302,8 +302,10 @@ router.get("/confirmedevents", async (req,res) => {
         for (let index = 0; index < confirmeds.length; index++) {
             const element = confirmeds[index];
             var event = await Event.findById(element);
+            var local = await Localization.findById(event.localization);
 
             event.promoter = user;
+            event.localization = local;
 
             if (Date.now() < event.date){
                 myEvents.push(event);
@@ -331,8 +333,10 @@ router.get("/pastevents", async (req,res) => {
         for (let index = 0; index < confirmeds.length; index++) {
             const element = confirmeds[index];
             var event = await Event.findById(element);
+            var local = await Localization.findById(event.localization);
 
             event.promoter = user;
+            event.localization = local;
 
             if (Date.now() > event.date){
                 myEvents.push(event);
