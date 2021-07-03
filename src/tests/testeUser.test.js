@@ -237,7 +237,7 @@ describe ("Testando Listagens de eventos",  () => {
         const res = await request(app)
 
         .get('/eventpresential')
-        .send({})
+        .query({email: "julio@ufape.br"})
 
         expect(res.statusCode).toEqual(200)
     },30000),
@@ -245,7 +245,7 @@ describe ("Testando Listagens de eventos",  () => {
         const res = await request(app)
 
         .get('/eventonline')
-        .send({})
+        .query({email: "julio@ufape.br"})
 
         expect(res.statusCode).toEqual(200)
     },30000),
@@ -253,7 +253,7 @@ describe ("Testando Listagens de eventos",  () => {
         const res = await request(app)
 
         .get('/eventpresential')
-        .query({category: "Música"})
+        .query({category: "Música",email: "julio@ufape.br"})
 
         expect(res.statusCode).toEqual(200)
     },30000),
@@ -261,7 +261,7 @@ describe ("Testando Listagens de eventos",  () => {
         const res = await request(app)
 
         .get('/eventonline')
-        .query({category: "Shows", name: "Sao"})
+        .query({category: "Shows", name: "Sao",email: "julio@ufape.br"})
 
         expect(res.statusCode).toEqual(200)
     },30000),
