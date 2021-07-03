@@ -187,9 +187,8 @@ describe ("Testando User e suas ações",  () => {
 
         .get('/auth/user')
         .set('Authorization', 'Bearer '+tk)
-        .send({
+        .query({
             email: "lf@ufape.br",
-            CPF_CNPJ: "05801485080"
         })
 
         expect(res.statusCode).toEqual(200)
