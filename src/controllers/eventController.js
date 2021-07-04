@@ -35,7 +35,6 @@ router.get("/eventpresential", async (req,res) => {
         if (!user){
             return res.status(400).send({error: "User not found"});
         }
-        var myEvents = [];
 
         var confirmeds = user.confirmedEvents;
         var eventsIn = [];
@@ -154,7 +153,6 @@ router.get("/eventonline", async (req,res) => {
         if (!user){
             return res.status(400).send({error: "User not found"});
         }
-        var myEvents = [];
 
         var confirmeds = user.confirmedEvents;
         var eventsIn = [];
@@ -302,8 +300,10 @@ router.get("/confirmedevents", async (req,res) => {
         for (let index = 0; index < confirmeds.length; index++) {
             const element = confirmeds[index];
             var event = await Event.findById(element);
+            var local = await Localization.findById(event.localization);
 
             event.promoter = user;
+            event.localization = local;
 
             if (Date.now() < event.date){
                 myEvents.push(event);
@@ -331,8 +331,10 @@ router.get("/pastevents", async (req,res) => {
         for (let index = 0; index < confirmeds.length; index++) {
             const element = confirmeds[index];
             var event = await Event.findById(element);
+            var local = await Localization.findById(event.localization);
 
             event.promoter = user;
+            event.localization = local;
 
             if (Date.now() > event.date){
                 myEvents.push(event);
@@ -410,8 +412,8 @@ router.post("/confirm", async (req,res) => {
             
         }
         user.confirmedEvents.push(event);
-        user.save();
         event.confirmedUsers.push(user);
+        user.save();
         event.save();
         
         return res.status(200).send({user,event});
@@ -427,10 +429,10 @@ router.post("/unconfirm", async (req,res) => {
         const event = await Event.findById(eventID);
 
         if (!user){
-            return res.status(404).send({error: "User not found"});
+            return res.status(400).send({error: "User not found"});
         }
         if (!event){
-            return res.status(404).send({error: "Event not found"});
+            return res.status(400).send({error: "Event not found"});
         }
 
         var confirmeds = user.confirmedEvents
@@ -438,16 +440,17 @@ router.post("/unconfirm", async (req,res) => {
         for (let index = 0; index < confirmeds.length; index++) {
             const element = confirmeds[index];
             if (element == event.id){
-                user.confirmedEvents.pop(event);
+                user.confirmedEvents.splice(user.confirmedEvents.indexOf(element), 1);
                 check = true;
             }
             
         }
-        user.save();
+        
         if(check){
-            event.confirmedUsers.pop(user);
+            event.confirmedUsers.splice(user.confirmedEvents.indexOf(user), 1);
             event.save();
         }
+        user.save();
         
         
         return res.status(200).send({user,event});
