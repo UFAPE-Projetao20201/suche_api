@@ -144,6 +144,124 @@ router.get("/eventpresential", async (req,res) => {
         return res.status(404).send({error: err.message});
     }
 });
+//Eventos passado presenciais (Para pode ver avaliações)
+router.get("/pasteventpresential", async (req,res) => {
+    try {
+        const { category, name, email}  = req.query;
+        const user = await User.findOne({email});
+
+        if (!user){
+            return res.status(400).send({error: "User not found"});
+        }
+
+        var confirmeds = user.confirmedEvents;
+        var eventsIn = [];
+
+        if ((!category && !name)||(category == null && name == null)){
+        Event.find( { isLocal: true, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
+            if (err){
+                return res.status(400).send({error: "Fail to load presential events"});
+            }
+            for (var i = 0; i < events.length; i++){
+                var local = await Localization.findById(events[i].localization);
+                var user = await User.findById(events[i].promoter);
+                events[i].promoter = user;
+
+                events[i].localization = local;
+
+                var item = {event: events[i], imIn: false}
+                for (let index = 0; index < confirmeds.length; index++) {
+                    const element = confirmeds[index];
+        
+                    if (element == events[i].id){
+                        item = {event: events[i], imIn: true}
+                    }
+                }   
+                eventsIn.push(item)
+            }
+            return res.status(200).json(eventsIn);
+        });
+        }
+        else if ( category == null || !category){
+            Event.find( { isLocal: true, "name": {"$regex": name,"$options":"i"}, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
+                if (err){
+                    return res.status(400).send({error: "Fail to load presential events"});
+                }
+                for (var i = 0; i < events.length; i++){
+                    var local = await Localization.findById(events[i].localization);
+                    var user = await User.findById(events[i].promoter);
+                    events[i].promoter = user;
+    
+                    events[i].localization = local;
+
+                    var item = {event: events[i], imIn: false}
+                    for (let index = 0; index < confirmeds.length; index++) {
+                        const element = confirmeds[index];
+            
+                        if (element == events[i].id){
+                            item = {event: events[i], imIn: true}
+                        }
+                    }   
+                    eventsIn.push(item)
+                }
+                return res.status(200).json(eventsIn);
+                });
+        }
+        else if ( name == null || !name){
+            Event.find( { isLocal: true, category: category, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
+                if (err){
+                    return res.status(400).send({error: "Fail to load presential events"});
+                }
+                for (var i = 0; i < events.length; i++){
+                    var local = await Localization.findById(events[i].localization);
+                    var user = await User.findById(events[i].promoter);
+                    events[i].promoter = user;
+    
+                    events[i].localization = local;
+
+                    var item = {event: events[i], imIn: false}
+                    for (let index = 0; index < confirmeds.length; index++) {
+                        const element = confirmeds[index];
+            
+                        if (element == events[i].id){
+                            item = {event: events[i], imIn: true}
+                        }
+                    }   
+                    eventsIn.push(item)
+                }   
+                    
+                return res.status(200).json(eventsIn);
+                });
+        }
+        else{
+            Event.find( { isLocal: true, "name": {"$regex": name,"$options":"i"}, category: category, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
+                if (err){
+                    return res.status(400).send({error: "Fail to load presential events"});
+                }
+                for (var i = 0; i < events.length; i++){
+                    var local = await Localization.findById(events[i].localization);
+                    var user = await User.findById(events[i].promoter);
+                    events[i].promoter = user;
+    
+                    events[i].localization = local;
+
+                    var item = {event: events[i], imIn: false}
+                    for (let index = 0; index < confirmeds.length; index++) {
+                        const element = confirmeds[index];
+            
+                        if (element == events[i].id){
+                            item = {event: events[i], imIn: true}
+                        }
+                    }   
+                    eventsIn.push(item)
+                }
+                return res.status(200).send(eventsIn);
+                });
+        }
+    } catch (err) {
+        return res.status(404).send({error: err.message});
+    }
+});
 
 router.get("/eventonline", async (req,res) => {
     try {
@@ -234,6 +352,123 @@ router.get("/eventonline", async (req,res) => {
         }
         else{
             Event.find( { isOnline: true, "name": {"$regex": name,"$options":"i"}, category: category, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
+                if (err){
+                    return res.status(400).send({error: "Fail to load presential events"});
+                }
+                for (var i = 0; i < events.length; i++){
+                    var local = await Localization.findById(events[i].localization);
+                    var user = await User.findById(events[i].promoter);
+                    events[i].promoter = user;
+    
+                    events[i].localization = local;
+                    
+                    var item = {event: events[i], imIn: false}
+                    for (let index = 0; index < confirmeds.length; index++) {
+                        const element = confirmeds[index];
+            
+                        if (element == events[i].id){
+                            item = {event: events[i], imIn: true}
+                        }
+                    }   
+                    eventsIn.push(item)
+                }
+                return res.status(200).json(eventsIn);
+                });
+        }
+    } catch (err) {
+        return res.status(404).send({error: err.message});
+    }
+});
+//Eventos passado online (Para pode ver avaliações)
+router.get("/pasteventonline", async (req,res) => {
+    try {
+        const { category, name, email}  = req.query;
+        const user = await User.findOne({email});
+
+        if (!user){
+            return res.status(400).send({error: "User not found"});
+        }
+
+        var confirmeds = user.confirmedEvents;
+        var eventsIn = [];
+
+        if ((!category && !name)||(category == null && name == null)){
+            Event.find( { isOnline: true, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
+            if (err){
+                return res.status(400).send({error: "Fail to load presential events"});
+            }
+            for (var i = 0; i < events.length; i++){
+                var local = await Localization.findById(events[i].localization);
+                var user = await User.findById(events[i].promoter);
+                events[i].promoter = user;
+
+                events[i].localization = local;
+                
+                var item = {event: events[i], imIn: false}
+                    for (let index = 0; index < confirmeds.length; index++) {
+                        const element = confirmeds[index];
+            
+                        if (element == events[i].id){
+                            item = {event: events[i], imIn: true}
+                        }
+                    }   
+                    eventsIn.push(item)
+            }
+            return res.status(200).json(eventsIn);
+            });
+        }
+        else if ( category == null || !category){
+            Event.find( { isOnline: true, "name": {"$regex": name,"$options":"i"}, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
+                if (err){
+                    return res.status(400).send({error: "Fail to load presential events"});
+                }
+                for (var i = 0; i < events.length; i++){
+                    var local = await Localization.findById(events[i].localization);
+                    var user = await User.findById(events[i].promoter);
+                    events[i].promoter = user;
+    
+                    events[i].localization = local;
+
+                    var item = {event: events[i], imIn: false}
+                    for (let index = 0; index < confirmeds.length; index++) {
+                        const element = confirmeds[index];
+            
+                        if (element == events[i].id){
+                            item = {event: events[i], imIn: true}
+                        }
+                    }   
+                    eventsIn.push(item)
+                }
+                return res.status(200).json(eventsIn);
+                });
+        }
+        else if ( name == null || !name){
+            Event.find( { isOnline: true, category: category, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
+                if (err){
+                    return res.status(400).send({error: "Fail to load presential events"});
+                }
+                for (var i = 0; i < events.length; i++){
+                    var local = await Localization.findById(events[i].localization);
+                    var user = await User.findById(events[i].promoter);
+                    events[i].promoter = user;
+    
+                    events[i].localization = local;
+                    
+                    var item = {event: events[i], imIn: false}
+                    for (let index = 0; index < confirmeds.length; index++) {
+                        const element = confirmeds[index];
+            
+                        if (element == events[i].id){
+                            item = {event: events[i], imIn: true}
+                        }
+                    }   
+                    eventsIn.push(item)
+                }
+                return res.status(200).json(eventsIn);
+                });
+        }
+        else{
+            Event.find( { isOnline: true, "name": {"$regex": name,"$options":"i"}, category: category, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
                 if (err){
                     return res.status(400).send({error: "Fail to load presential events"});
                 }
