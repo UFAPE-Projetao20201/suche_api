@@ -249,6 +249,22 @@ describe ("Testando Listagens de eventos",  () => {
 
         expect(res.statusCode).toEqual(200)
     },30000),
+    it ("Receber todos Eventos Presenciais Passados", async() => {
+        const res = await request(app)
+
+        .get('/pasteventpresential')
+        .query({email: "julio@ufape.br"})
+
+        expect(res.statusCode).toEqual(200)
+    },30000),
+    it ("Receber todos Eventos Online Passados", async() => {
+        const res = await request(app)
+
+        .get('/pasteventonline')
+        .query({email: "julio@ufape.br"})
+
+        expect(res.statusCode).toEqual(200)
+    },30000),
     it ("Receber todos Eventos Presenciais dado nome e/ou categoria", async() => {
         const res = await request(app)
 
