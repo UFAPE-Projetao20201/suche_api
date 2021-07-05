@@ -3,6 +3,7 @@ const authMiddleware = require('../middlewares/auth');
 const Localization = require('../model/localization');
 const Event = require('../model/event');
 const User = require('../model/user');
+const Rating = require('../model/rating');
 
 const router = express.Router();
 
@@ -570,15 +571,59 @@ router.get("/pastevents", async (req,res) => {
 
             event.promoter = user;
             event.localization = local;
+            var rate = false
 
             if (Date.now() > event.date){
-                myEvents.push(event);
+                for (let k = 0; k < event.ratings.length; k++) {
+                    const element = await Rating.findById(ratings[i]);
+                    if (element.user == user.id){
+                        rate = true;
+                    }
+                    
+                }
+    
+                var eventR = {event: event,rated: rate};
+                myEvents.push(eventR);
             } 
         }
         return res.status(200).json(myEvents);
 
     }catch (err){
         return res.status(404).send({error: err.message});  
+    }
+});
+
+router.get("/rate", async (req, res) => {
+    try {
+        const { eventID }  = req.query;
+        const event = await Event.findById(eventID);
+
+        if (!event){
+            return res.status(400).send({error: "Event not found"});
+        }
+        var ratings = event.ratings;
+        var avaliacoes = [];
+        var mSec = 0;
+        var mQua = 0;
+        var mFai = 0;
+
+        for (let i = 0; i < ratings.length; i++) {
+            const element = await Rating.findById(ratings[i]);
+            mSec += element.security;
+            mQua += element.quality;
+            mFai += element.faithfulness;
+            const user = await User.findById(element.user);
+            element.user = user;
+            avaliacoes.push(element);
+        }
+        mSec = mSec/ratings.length;
+        mQua = mQua/ratings.length;
+        mFai = mFai/ratings.length;
+
+        return res.status(200).send({ratings: avaliacoes, mSecurity: mSec, mQuality: mQua, mFaithfulness: mFai});
+        
+    } catch (err) {
+        return res.status(404).send({error: err.message});
     }
 });
 
@@ -694,5 +739,49 @@ router.post("/unconfirm", async (req,res) => {
     }
 });
 
+router.post("/rate", async (req,res) => {
+    try {
+        const {eventID, rate} = req.body;
+        const user = await User.findById(rate.user);
+        const event = await Event.findById(eventID);
+
+        if (!user){
+            return res.status(404).send({error: "User not found"});
+        }
+        if (!event){
+            return res.status(404).send({error: "Event not found"});
+        }
+
+        const rating = await Rating.create(req.body.rate);
+
+        var confirmeds = user.confirmedEvents;
+        
+        var flag = false
+
+        for (let index = 0; index < confirmeds.length; index++) {
+            const element = confirmeds[index];
+            if (element == event.id){
+                flag = true;
+                break;
+            }
+            
+        }
+        if (!flag){
+            return res.status(400).send({error: "Event not confirmed"})
+        }
+        for (let i = 0; i < event.ratings.length; i++) {
+            const element = await Rating.findById(event.ratings[i]);
+            if (element.user == rate.user){
+                return res.status(400).send({error: "Event already rated"})
+            }
+        }
+        event.ratings.push(rating);
+        event.save();
+        
+        return res.status(201).send({rating,event});
+    } catch (err) {
+        return res.status(404).send({error: err.message});
+    }
+});
 
 module.exports = app => app.use('/', router);

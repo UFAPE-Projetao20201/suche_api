@@ -29,7 +29,6 @@ const RatingSchema = new mongoose.Schema({
     type: String,
     default: ""
   }
-
 });
 
 const Rating = mongoose.model('Rating', RatingSchema);
