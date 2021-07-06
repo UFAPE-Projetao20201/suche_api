@@ -295,6 +295,22 @@ describe ("Testando Listagens de eventos",  () => {
         .query({email: "julio@ufape.br"})
 
         expect(res.statusCode).toEqual(200)
+    },30000),
+    it ("Receber todos Eventos Online", async() => {
+        const res = await request(app)
+
+        .get('/myevents')
+        .query({email: "julio@ufape.br"})
+
+        expect(res.statusCode).toEqual(200)
+    },30000),
+    it ("Receber todos Eventos passados que o usuário é promotor", async() => {
+        const res = await request(app)
+
+        .get('/mypastevents')
+        .query({email: "julio@ufape.br"})
+
+        expect(res.statusCode).toEqual(200)
     },30000)
 
 })
