@@ -521,6 +521,55 @@ router.get("/eventcategory", async (req,res) => {
     }
 });
 
+router.get("/myevents", async (req,res) => {
+    try {
+        const { email }  = req.query;
+        const user = await User.findOne({email});
+        Event.find( { promoter: user.id, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
+            if (err){
+                return res.status(400).send({error: "Fail to load events:"+category});
+            }
+            for (var i = 0; i < events.length; i++){
+                var local = await Localization.findById(events[i].localization);
+                var user = await User.findById(events[i].promoter);
+                events[i].promoter = user;
+
+                events[i].localization = local;
+                
+            }
+            return res.status(200).json(events);
+        });
+        
+    } catch (err) {
+        return res.status(404).send({error: err.message});
+    }
+});
+
+router.get("/mypastevents", async (req,res) => {
+    try {
+        const { email }  = req.query;
+        const user = await User.findOne({email});
+        Event.find( { promoter: user.id, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
+            if (err){
+                return res.status(400).send({error: "Fail to load events:"+category});
+            }
+            for (var i = 0; i < events.length; i++){
+                var local = await Localization.findById(events[i].localization);
+                var user = await User.findById(events[i].promoter);
+                events[i].promoter = user;
+
+                events[i].localization = local;
+                
+            }
+            return res.status(200).json(events);
+        });
+        
+    } catch (err) {
+        return res.status(404).send({error: err.message});
+    }
+});
+
+
 router.get("/confirmedevents", async (req,res) => {
     try{
         const { email }  = req.query;
@@ -579,7 +628,6 @@ router.get("/pastevents", async (req,res) => {
                     if (element.user == user.id){
                         rate = true;
                     }
-                    
                 }
     
                 var eventR = {event: event,rated: rate};
@@ -778,7 +826,7 @@ router.post("/rate", async (req,res) => {
         event.ratings.push(rating);
         event.save();
         
-        return res.status(201).send({rating,event});
+        return res.status(20).send({rating,event});
     } catch (err) {
         return res.status(404).send({error: err.message});
     }
