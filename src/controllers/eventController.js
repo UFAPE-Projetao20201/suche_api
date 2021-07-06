@@ -826,7 +826,7 @@ router.post("/rate", async (req,res) => {
         event.ratings.push(rating);
         event.save();
         
-        return res.status(20).send({rating,event});
+        return res.status(200).send({rating,event});
     } catch (err) {
         return res.status(404).send({error: err.message});
     }
