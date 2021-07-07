@@ -575,7 +575,7 @@ router.get("/pastevents", async (req,res) => {
 
             if (Date.now() > event.date){
                 for (let k = 0; k < event.ratings.length; k++) {
-                    const element = await Rating.findById(ratings[i]);
+                    const element = await Rating.findById(event.ratings[k]);
                     if (element.user == user.id){
                         rate = true;
                     }
