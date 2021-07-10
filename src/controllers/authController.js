@@ -8,8 +8,6 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const authConfig = require('../config/auth.json');
 
-const mailer = require('../modules/mailer');
-
 function generateToken( params = {}){
     return jwt.sign(params, authConfig.secret, { expiresIn: 86400 ,});
 }
@@ -67,7 +65,7 @@ router.post('/authenticate', async (req,res) => {
     let passBD = password;
     
     
-    if ( user.password !=  passBD ){
+    if ( user.password !==  passBD ){
         
         return res.status(400).send({error: "Password not valid"});
     }
@@ -75,19 +73,18 @@ router.post('/authenticate', async (req,res) => {
     user.password = undefined;
 
     const token = generateToken({email : user.email});
-    res.send({user, token});
+    return res.send({user, token});
 });
 //Rotas a seguir precisam da validação por token
 router.use(authMiddleware);
 
 //ATUALIZAR PERFIL(NAME, SURNAME, GENDER)
   router.put('/update', async (req,res) => {
-    const { email, phone } =  req.body;
+    const { email } =  req.body;
     const body = req.body;
     
     try {
         const user = await User.findOne({ email });
-        const userCheck = user;
         if (!user)
           return res.status(400).send({ error: 'User not found' });
         
