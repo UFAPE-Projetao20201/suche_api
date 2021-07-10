@@ -40,7 +40,7 @@ router.get("/eventpresential", async (req,res) => {
         var confirmeds = user.confirmedEvents;
         var eventsIn = [];
 
-        if ((!category && !name)||(category == null && name == null)){
+        if ((!category && !name)||(category === null && name === null)){
         Event.find( { isLocal: true, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
             if (err){
                 return res.status(400).send({error: "Fail to load presential events"});
@@ -56,7 +56,7 @@ router.get("/eventpresential", async (req,res) => {
                 for (let index = 0; index < confirmeds.length; index++) {
                     const element = confirmeds[index];
         
-                    if (element == events[i].id){
+                    if (element === events[i].id){
                         item = {event: events[i], imIn: true}
                     }
                 }   
@@ -65,7 +65,7 @@ router.get("/eventpresential", async (req,res) => {
             return res.status(200).json(eventsIn);
         });
         }
-        else if ( category == null || !category){
+        else if ( category === null || !category){
             Event.find( { isLocal: true, "name": {"$regex": name,"$options":"i"}, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
                 if (err){
                     return res.status(400).send({error: "Fail to load presential events"});
@@ -81,7 +81,7 @@ router.get("/eventpresential", async (req,res) => {
                     for (let index = 0; index < confirmeds.length; index++) {
                         const element = confirmeds[index];
             
-                        if (element == events[i].id){
+                        if (element === events[i].id){
                             item = {event: events[i], imIn: true}
                         }
                     }   
@@ -90,7 +90,7 @@ router.get("/eventpresential", async (req,res) => {
                 return res.status(200).json(eventsIn);
                 });
         }
-        else if ( name == null || !name){
+        else if ( name === null || !name){
             Event.find( { isLocal: true, category: category, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
                 if (err){
                     return res.status(400).send({error: "Fail to load presential events"});
@@ -106,7 +106,7 @@ router.get("/eventpresential", async (req,res) => {
                     for (let index = 0; index < confirmeds.length; index++) {
                         const element = confirmeds[index];
             
-                        if (element == events[i].id){
+                        if (element === events[i].id){
                             item = {event: events[i], imIn: true}
                         }
                     }   
@@ -132,7 +132,7 @@ router.get("/eventpresential", async (req,res) => {
                     for (let index = 0; index < confirmeds.length; index++) {
                         const element = confirmeds[index];
             
-                        if (element == events[i].id){
+                        if (element === events[i].id){
                             item = {event: events[i], imIn: true}
                         }
                     }   
@@ -158,7 +158,7 @@ router.get("/pasteventpresential", async (req,res) => {
         var confirmeds = user.confirmedEvents;
         var eventsIn = [];
 
-        if ((!category && !name)||(category == null && name == null)){
+        if ((!category && !name)||(category === null && name === null)){
         Event.find( { isLocal: true, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
             if (err){
                 return res.status(400).send({error: "Fail to load past presential events"});
@@ -174,7 +174,7 @@ router.get("/pasteventpresential", async (req,res) => {
                 for (let index = 0; index < confirmeds.length; index++) {
                     const element = confirmeds[index];
         
-                    if (element == events[i].id){
+                    if (element === events[i].id){
                         item = {event: events[i], imIn: true}
                     }
                 }   
@@ -183,7 +183,7 @@ router.get("/pasteventpresential", async (req,res) => {
             return res.status(200).json(eventsIn);
         });
         }
-        else if ( category == null || !category){
+        else if ( category === null || !category){
             Event.find( { isLocal: true, "name": {"$regex": name,"$options":"i"}, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
                 if (err){
                     return res.status(400).send({error: "Fail to load past presential events"});
@@ -199,7 +199,7 @@ router.get("/pasteventpresential", async (req,res) => {
                     for (let index = 0; index < confirmeds.length; index++) {
                         const element = confirmeds[index];
             
-                        if (element == events[i].id){
+                        if (element === events[i].id){
                             item = {event: events[i], imIn: true}
                         }
                     }   
@@ -208,7 +208,7 @@ router.get("/pasteventpresential", async (req,res) => {
                 return res.status(200).json(eventsIn);
                 });
         }
-        else if ( name == null || !name){
+        else if ( name === null || !name){
             Event.find( { isLocal: true, category: category, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
                 if (err){
                     return res.status(400).send({error: "Fail to load past presential events"});
@@ -224,7 +224,7 @@ router.get("/pasteventpresential", async (req,res) => {
                     for (let index = 0; index < confirmeds.length; index++) {
                         const element = confirmeds[index];
             
-                        if (element == events[i].id){
+                        if (element === events[i].id){
                             item = {event: events[i], imIn: true}
                         }
                     }   
@@ -250,7 +250,7 @@ router.get("/pasteventpresential", async (req,res) => {
                     for (let index = 0; index < confirmeds.length; index++) {
                         const element = confirmeds[index];
             
-                        if (element == events[i].id){
+                        if (element === events[i].id){
                             item = {event: events[i], imIn: true}
                         }
                     }   
@@ -276,7 +276,7 @@ router.get("/eventonline", async (req,res) => {
         var confirmeds = user.confirmedEvents;
         var eventsIn = [];
 
-        if ((!category && !name)||(category == null && name == null)){
+        if ((!category && !name)||(category === null && name === null)){
             Event.find( { isOnline: true, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
             if (err){
                 return res.status(400).send({error: "Fail to load online events"});
@@ -292,7 +292,7 @@ router.get("/eventonline", async (req,res) => {
                     for (let index = 0; index < confirmeds.length; index++) {
                         const element = confirmeds[index];
             
-                        if (element == events[i].id){
+                        if (element === events[i].id){
                             item = {event: events[i], imIn: true}
                         }
                     }   
@@ -301,7 +301,7 @@ router.get("/eventonline", async (req,res) => {
             return res.status(200).json(eventsIn);
             });
         }
-        else if ( category == null || !category){
+        else if ( category === null || !category){
             Event.find( { isOnline: true, "name": {"$regex": name,"$options":"i"}, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
                 if (err){
                     return res.status(400).send({error: "Fail to load online events"});
@@ -317,7 +317,7 @@ router.get("/eventonline", async (req,res) => {
                     for (let index = 0; index < confirmeds.length; index++) {
                         const element = confirmeds[index];
             
-                        if (element == events[i].id){
+                        if (element === events[i].id){
                             item = {event: events[i], imIn: true}
                         }
                     }   
@@ -326,7 +326,7 @@ router.get("/eventonline", async (req,res) => {
                 return res.status(200).json(eventsIn);
                 });
         }
-        else if ( name == null || !name){
+        else if ( name === null || !name){
             Event.find( { isOnline: true, category: category, date: { $gte: Date.now() }}, null, {sort: "date"}, async function(err,events){
                 if (err){
                     return res.status(400).send({error: "Fail to load online events"});
@@ -342,7 +342,7 @@ router.get("/eventonline", async (req,res) => {
                     for (let index = 0; index < confirmeds.length; index++) {
                         const element = confirmeds[index];
             
-                        if (element == events[i].id){
+                        if (element === events[i].id){
                             item = {event: events[i], imIn: true}
                         }
                     }   
@@ -367,7 +367,7 @@ router.get("/eventonline", async (req,res) => {
                     for (let index = 0; index < confirmeds.length; index++) {
                         const element = confirmeds[index];
             
-                        if (element == events[i].id){
+                        if (element === events[i].id){
                             item = {event: events[i], imIn: true}
                         }
                     }   
@@ -393,7 +393,7 @@ router.get("/pasteventonline", async (req,res) => {
         var confirmeds = user.confirmedEvents;
         var eventsIn = [];
 
-        if ((!category && !name)||(category == null && name == null)){
+        if ((!category && !name)||(category === null && name === null)){
             Event.find( { isOnline: true, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
             if (err){
                 return res.status(400).send({error: "Fail to load past online events"});
@@ -409,7 +409,7 @@ router.get("/pasteventonline", async (req,res) => {
                     for (let index = 0; index < confirmeds.length; index++) {
                         const element = confirmeds[index];
             
-                        if (element == events[i].id){
+                        if (element === events[i].id){
                             item = {event: events[i], imIn: true}
                         }
                     }   
@@ -418,7 +418,7 @@ router.get("/pasteventonline", async (req,res) => {
             return res.status(200).json(eventsIn);
             });
         }
-        else if ( category == null || !category){
+        else if ( category === null || !category){
             Event.find( { isOnline: true, "name": {"$regex": name,"$options":"i"}, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
                 if (err){
                     return res.status(400).send({error: "Fail to load past online events"});
@@ -434,7 +434,7 @@ router.get("/pasteventonline", async (req,res) => {
                     for (let index = 0; index < confirmeds.length; index++) {
                         const element = confirmeds[index];
             
-                        if (element == events[i].id){
+                        if (element === events[i].id){
                             item = {event: events[i], imIn: true}
                         }
                     }   
@@ -443,7 +443,7 @@ router.get("/pasteventonline", async (req,res) => {
                 return res.status(200).json(eventsIn);
                 });
         }
-        else if ( name == null || !name){
+        else if ( name === null || !name){
             Event.find( { isOnline: true, category: category, date: { $lte: Date.now() }}, null, {sort: "date"}, async function(err,events){
                 if (err){
                     return res.status(400).send({error: "Fail to load past online events"});
@@ -459,7 +459,7 @@ router.get("/pasteventonline", async (req,res) => {
                     for (let index = 0; index < confirmeds.length; index++) {
                         const element = confirmeds[index];
             
-                        if (element == events[i].id){
+                        if (element === events[i].id){
                             item = {event: events[i], imIn: true}
                         }
                     }   
@@ -484,7 +484,7 @@ router.get("/pasteventonline", async (req,res) => {
                     for (let index = 0; index < confirmeds.length; index++) {
                         const element = confirmeds[index];
             
-                        if (element == events[i].id){
+                        if (element === events[i].id){
                             item = {event: events[i], imIn: true}
                         }
                     }   
@@ -602,7 +602,7 @@ router.get("/pastevents", async (req,res) => {
             if (Date.now() > event.date){
                 for (let k = 0; k < event.ratings.length; k++) {
                     const element = await Rating.findById(event.ratings[k]);
-                    if (element.user == user.id){
+                    if (element.user === user.id){
                         rate = true;
                     }
                 }
@@ -711,7 +711,7 @@ router.post("/confirm", async (req,res) => {
 
         for (let index = 0; index < confirmeds.length; index++) {
             const element = confirmeds[index];
-            if (element == event.id){
+            if (element === event.id){
                 return res.status(400).send({error: "Event already confirmed"})
             }
             
@@ -744,7 +744,7 @@ router.post("/unconfirm", async (req,res) => {
         var check = false
         for (let index = 0; index < confirmeds.length; index++) {
             const element = confirmeds[index];
-            if (element == event.id){
+            if (element === event.id){
                 user.confirmedEvents.splice(user.confirmedEvents.indexOf(element), 1);
                 check = true;
             }
@@ -781,14 +781,14 @@ router.post("/rate", async (req,res) => {
         var confirmeds = user.confirmedEvents;
         for (let index = 0; index < confirmeds.length; index++) {
             const element = confirmeds[index];
-            if (element == event.id){
+            if (element === event.id){
                 return res.status(400).send({error: "Event not confirmed"})
             }
             
         }
         for (let i = 0; i < event.ratings.length; i++) {
             const element = await Rating.findById(event.ratings[i]);
-            if (element.user == rate.user){
+            if (element.user === rate.user){
                 return res.status(400).send({error: "Event already rated"})
             }
         }
