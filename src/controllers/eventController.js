@@ -778,21 +778,13 @@ router.post("/rate", async (req,res) => {
         }
 
         const rating = await Rating.create(req.body.rate);
-
         var confirmeds = user.confirmedEvents;
-        
-        var flag = false
-
         for (let index = 0; index < confirmeds.length; index++) {
             const element = confirmeds[index];
             if (element == event.id){
-                flag = true;
-                break;
+                return res.status(400).send({error: "Event not confirmed"})
             }
             
-        }
-        if (!flag){
-            return res.status(400).send({error: "Event not confirmed"})
         }
         for (let i = 0; i < event.ratings.length; i++) {
             const element = await Rating.findById(event.ratings[i]);
