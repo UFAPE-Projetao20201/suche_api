@@ -29,5 +29,4 @@ module.exports = (req, res, next) => {
         req.email = decoded.email;
         return next();
     });
-    return
 };
